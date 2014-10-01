@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-//#include <cs50.h>
 
 
 // number of tabs with numbers
@@ -13,7 +12,7 @@
 #define DIFF(a, b)       (((a) > (b))? ((a) - (b)):((b) - (a)))
 
 // I need to printf in my string the complete operation to keep track of it, to prinf it later in main
-#define SPRINT_OP(a, b, ope, result) ({strcpy(tmp_res, res); sprintf(res,"  %d %c %d = %d\n%s",(((a)>(b))?(a):(b)),c_op[ope],(((a)>(b))?(b):(a)),result,tmp_res);})
+#define SPRINT_OP(a, b, ope, result) ({strcpy(tmp_res, res); sprintf(res,"%d %c %d = %d\n%s",(((a)>(b))?(a):(b)),c_op[ope],(((a)>(b))?(b):(a)),result,tmp_res);})
 
 
 int best = 0;
@@ -106,7 +105,6 @@ int countdown_timer(void)
     // update timer
     time_left = countdown_time_in_secs - seconds;
     printf("  30 seconds to find the solution.....\n");
-    fflush(stdout);
 
     while (time_left > 0)
     {
@@ -121,22 +119,20 @@ int countdown_timer(void)
         //if(time_left % 5 == 0)
         //  printf("\nYou have %d seconds left\n",time_left);
     }
-        printf( "           \n  Time's up!!!!\n");
-        fflush(stdout);
+        printf( "\n\n  Time's up!!!!\n\n");
 
     return 0;
 }
 
 void reset_var(void)
 {
-  int reset = 0;
-  for(reset; reset < 255; reset++)
+  for(int reset = 0; reset < 255; reset++)
   {
       res[reset] = '\0';
       tmp_res[reset] = '\0';
   }
-  int best = 0;
-  int best_diff = 999;
+  best = 0;
+  best_diff = 999;
 }
 
 char ask(void)
@@ -144,12 +140,9 @@ char ask(void)
   char ok = '\0';
   do
   {
-      printf("  Do you want to play again?(type y for yes and n for no)\n");
+      printf("Do you want to play again?(type y for yes and n for no)\n");
+      scanf("%c",&ok);
       fflush(stdout);
-      //printf("ok before : %c\n", ok);
-      scanf("  %c", &ok);
-      fflush(stdout);
-      //printf("ok after : %c\n", ok);
   }
   while(ok != 'y' && ok != 'n');
   return ok;
@@ -163,19 +156,19 @@ int main (void)
     time_t shuffle;
     srand((unsigned) time(&shuffle));
     printf("\n\n************************WELCOME TO THE COUNTDOWN GAME!!!************************\n\n");
-    fflush(stdout);
     do
     {
+        printf("start boucle");
+        //ok = '\0';
         for (i = 0; i < NBTAB; i++)
         {
             num = draw[rand() % 14];
             printf("  number %d : %d\n",(i+1), num);
-            fflush(stdout);
             t[i] = num;
         }
         total = 100 + (rand() % 899);
         printf("\n  total: %d\n\n", total);
-        fflush(stdout);
+
         countdown_timer();
 
         if(!compute(t, NBTAB, total))
@@ -183,21 +176,19 @@ int main (void)
 
         if(best == total)
         {
-            printf("  We have an answer!\n\n  Solution: \n\n");
+            printf("We have an answer!\n\nSolution: \n\n");
             printf("%s \n",res);
-            fflush(stdout);
         }
         else
         {
-            printf("  No solution was found, but the closest answer is: \n\n");
-            printf("  %s \n",res);
-            fflush(stdout);
+            printf("No solution was found, but the closest answer is: \n\n");
+            printf("%s \n",res);
         }
         reset_var();
         ok = ask();
     }
     while(ok == 'y');
+    //ok = '\0';
     printf("\n\n*******************************GOODBYE!!!************************************\n\n");
-    fflush(stdout);
     return EXIT_SUCCESS;
 }
