@@ -158,7 +158,6 @@ int main (void)
     printf("\n\n************************WELCOME TO THE COUNTDOWN GAME!!!************************\n\n");
     do
     {
-        printf("start boucle");
         //ok = '\0';
         for (i = 0; i < NBTAB; i++)
         {
